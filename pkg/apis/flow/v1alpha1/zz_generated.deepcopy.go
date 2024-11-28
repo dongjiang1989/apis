@@ -89,6 +89,11 @@ func (in *Flow) DeepCopyInto(out *Flow) {
 		*out = new(DependsOn)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.Patch != nil {
+		in, out := &in.Patch, &out.Patch
+		*out = new(batchv1alpha1.JobSpec)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 
@@ -189,6 +194,11 @@ func (in *JobFlowSpec) DeepCopyInto(out *JobFlowSpec) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.MaxRetry != nil {
+		in, out := &in.MaxRetry, &out.MaxRetry
+		*out = new(int64)
+		**out = **in
 	}
 	return
 }
