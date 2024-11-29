@@ -35,6 +35,11 @@ type JobFlowSpec struct {
 	Flows []Flow `json:"flows,omitempty"`
 	// +optional
 	JobRetainPolicy RetainPolicy `json:"jobRetainPolicy,omitempty"`
+	// Defaults to 3.
+	//
+	// +kubebuilder:default:=3
+	// +optional
+	MaxRetry *int64 `json:"maxRetry,omitempty"`
 }
 
 // Flow defines the dependent of jobs
@@ -44,6 +49,13 @@ type Flow struct {
 	Name string `json:"name"`
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty"`
+	// +optional
+	Patch *Patch `json:"patch,omitempty"`
+}
+
+type Patch struct {
+	// +optional
+	Spec *v1alpha1.JobSpec `json:"spec,omitempty"`
 }
 
 type DependsOn struct {

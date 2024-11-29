@@ -26,6 +26,7 @@ import (
 type JobFlowSpecApplyConfiguration struct {
 	Flows           []FlowApplyConfiguration   `json:"flows,omitempty"`
 	JobRetainPolicy *flowv1alpha1.RetainPolicy `json:"jobRetainPolicy,omitempty"`
+	MaxRetry        *int64                     `json:"maxRetry,omitempty"`
 }
 
 // JobFlowSpecApplyConfiguration constructs a declarative configuration of the JobFlowSpec type for use with
@@ -52,5 +53,13 @@ func (b *JobFlowSpecApplyConfiguration) WithFlows(values ...*FlowApplyConfigurat
 // If called multiple times, the JobRetainPolicy field is set to the value of the last call.
 func (b *JobFlowSpecApplyConfiguration) WithJobRetainPolicy(value flowv1alpha1.RetainPolicy) *JobFlowSpecApplyConfiguration {
 	b.JobRetainPolicy = &value
+	return b
+}
+
+// WithMaxRetry sets the MaxRetry field in the declarative configuration to the given value
+// and returns the receiver, so that objects can be built by chaining "With" function invocations.
+// If called multiple times, the MaxRetry field is set to the value of the last call.
+func (b *JobFlowSpecApplyConfiguration) WithMaxRetry(value int64) *JobFlowSpecApplyConfiguration {
+	b.MaxRetry = &value
 	return b
 }
