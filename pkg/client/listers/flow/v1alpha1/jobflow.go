@@ -18,8 +18,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/client-go/listers"
 	"k8s.io/client-go/tools/cache"
 	v1alpha1 "volcano.sh/apis/pkg/apis/flow/v1alpha1"
 )
@@ -37,17 +37,25 @@ type JobFlowLister interface {
 
 // jobFlowLister implements the JobFlowLister interface.
 type jobFlowLister struct {
-	listers.ResourceIndexer[*v1alpha1.JobFlow]
+	indexer cache.Indexer
 }
 
 // NewJobFlowLister returns a new JobFlowLister.
 func NewJobFlowLister(indexer cache.Indexer) JobFlowLister {
-	return &jobFlowLister{listers.New[*v1alpha1.JobFlow](indexer, v1alpha1.Resource("jobflow"))}
+	return &jobFlowLister{indexer: indexer}
+}
+
+// List lists all JobFlows in the indexer.
+func (s *jobFlowLister) List(selector labels.Selector) (ret []*v1alpha1.JobFlow, err error) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
+		ret = append(ret, m.(*v1alpha1.JobFlow))
+	})
+	return ret, err
 }
 
 // JobFlows returns an object that can list and get JobFlows.
 func (s *jobFlowLister) JobFlows(namespace string) JobFlowNamespaceLister {
-	return jobFlowNamespaceLister{listers.NewNamespaced[*v1alpha1.JobFlow](s.ResourceIndexer, namespace)}
+	return jobFlowNamespaceLister{indexer: s.indexer, namespace: namespace}
 }
 
 // JobFlowNamespaceLister helps list and get JobFlows.
@@ -65,5 +73,26 @@ type JobFlowNamespaceLister interface {
 // jobFlowNamespaceLister implements the JobFlowNamespaceLister
 // interface.
 type jobFlowNamespaceLister struct {
-	listers.ResourceIndexer[*v1alpha1.JobFlow]
+	indexer   cache.Indexer
+	namespace string
+}
+
+// List lists all JobFlows in the indexer for a given namespace.
+func (s jobFlowNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.JobFlow, err error) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
+		ret = append(ret, m.(*v1alpha1.JobFlow))
+	})
+	return ret, err
+}
+
+// Get retrieves the JobFlow from the indexer for a given namespace and name.
+func (s jobFlowNamespaceLister) Get(name string) (*v1alpha1.JobFlow, error) {
+	obj, exists, err := s.indexer.GetByKey(s.namespace + "/" + name)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, errors.NewNotFound(v1alpha1.Resource("jobflow"), name)
+	}
+	return obj.(*v1alpha1.JobFlow), nil
 }

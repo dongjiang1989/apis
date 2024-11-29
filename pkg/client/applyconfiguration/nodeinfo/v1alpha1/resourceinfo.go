@@ -17,14 +17,14 @@ limitations under the License.
 
 package v1alpha1
 
-// ResourceInfoApplyConfiguration represents a declarative configuration of the ResourceInfo type for use
+// ResourceInfoApplyConfiguration represents an declarative configuration of the ResourceInfo type for use
 // with apply.
 type ResourceInfoApplyConfiguration struct {
 	Allocatable *string `json:"allocatable,omitempty"`
 	Capacity    *int    `json:"capacity,omitempty"`
 }
 
-// ResourceInfoApplyConfiguration constructs a declarative configuration of the ResourceInfo type for use with
+// ResourceInfoApplyConfiguration constructs an declarative configuration of the ResourceInfo type for use with
 // apply.
 func ResourceInfo() *ResourceInfoApplyConfiguration {
 	return &ResourceInfoApplyConfiguration{}

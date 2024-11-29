@@ -42,22 +42,20 @@ var queuesKind = v1beta1.SchemeGroupVersion.WithKind("Queue")
 
 // Get takes name of the queue, and returns the corresponding queue object, and an error if there is any.
 func (c *FakeQueues) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.Queue, err error) {
-	emptyResult := &v1beta1.Queue{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootGetActionWithOptions(queuesResource, name, options), emptyResult)
+		Invokes(testing.NewRootGetAction(queuesResource, name), &v1beta1.Queue{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1beta1.Queue), err
 }
 
 // List takes label and field selectors, and returns the list of Queues that match those selectors.
 func (c *FakeQueues) List(ctx context.Context, opts v1.ListOptions) (result *v1beta1.QueueList, err error) {
-	emptyResult := &v1beta1.QueueList{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootListActionWithOptions(queuesResource, queuesKind, opts), emptyResult)
+		Invokes(testing.NewRootListAction(queuesResource, queuesKind, opts), &v1beta1.QueueList{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 
 	label, _, _ := testing.ExtractFromListOptions(opts)
@@ -76,39 +74,36 @@ func (c *FakeQueues) List(ctx context.Context, opts v1.ListOptions) (result *v1b
 // Watch returns a watch.Interface that watches the requested queues.
 func (c *FakeQueues) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
-		InvokesWatch(testing.NewRootWatchActionWithOptions(queuesResource, opts))
+		InvokesWatch(testing.NewRootWatchAction(queuesResource, opts))
 }
 
 // Create takes the representation of a queue and creates it.  Returns the server's representation of the queue, and an error, if there is any.
 func (c *FakeQueues) Create(ctx context.Context, queue *v1beta1.Queue, opts v1.CreateOptions) (result *v1beta1.Queue, err error) {
-	emptyResult := &v1beta1.Queue{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootCreateActionWithOptions(queuesResource, queue, opts), emptyResult)
+		Invokes(testing.NewRootCreateAction(queuesResource, queue), &v1beta1.Queue{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1beta1.Queue), err
 }
 
 // Update takes the representation of a queue and updates it. Returns the server's representation of the queue, and an error, if there is any.
 func (c *FakeQueues) Update(ctx context.Context, queue *v1beta1.Queue, opts v1.UpdateOptions) (result *v1beta1.Queue, err error) {
-	emptyResult := &v1beta1.Queue{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootUpdateActionWithOptions(queuesResource, queue, opts), emptyResult)
+		Invokes(testing.NewRootUpdateAction(queuesResource, queue), &v1beta1.Queue{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1beta1.Queue), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeQueues) UpdateStatus(ctx context.Context, queue *v1beta1.Queue, opts v1.UpdateOptions) (result *v1beta1.Queue, err error) {
-	emptyResult := &v1beta1.Queue{}
+func (c *FakeQueues) UpdateStatus(ctx context.Context, queue *v1beta1.Queue, opts v1.UpdateOptions) (*v1beta1.Queue, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewRootUpdateSubresourceActionWithOptions(queuesResource, "status", queue, opts), emptyResult)
+		Invokes(testing.NewRootUpdateSubresourceAction(queuesResource, "status", queue), &v1beta1.Queue{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1beta1.Queue), err
 }
@@ -122,7 +117,7 @@ func (c *FakeQueues) Delete(ctx context.Context, name string, opts v1.DeleteOpti
 
 // DeleteCollection deletes a collection of objects.
 func (c *FakeQueues) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewRootDeleteCollectionActionWithOptions(queuesResource, opts, listOpts)
+	action := testing.NewRootDeleteCollectionAction(queuesResource, listOpts)
 
 	_, err := c.Fake.Invokes(action, &v1beta1.QueueList{})
 	return err
@@ -130,11 +125,10 @@ func (c *FakeQueues) DeleteCollection(ctx context.Context, opts v1.DeleteOptions
 
 // Patch applies the patch and returns the patched queue.
 func (c *FakeQueues) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Queue, err error) {
-	emptyResult := &v1beta1.Queue{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(queuesResource, name, pt, data, opts, subresources...), emptyResult)
+		Invokes(testing.NewRootPatchSubresourceAction(queuesResource, name, pt, data, subresources...), &v1beta1.Queue{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1beta1.Queue), err
 }
@@ -152,11 +146,10 @@ func (c *FakeQueues) Apply(ctx context.Context, queue *schedulingv1beta1.QueueAp
 	if name == nil {
 		return nil, fmt.Errorf("queue.Name must be provided to Apply")
 	}
-	emptyResult := &v1beta1.Queue{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(queuesResource, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
+		Invokes(testing.NewRootPatchSubresourceAction(queuesResource, *name, types.ApplyPatchType, data), &v1beta1.Queue{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1beta1.Queue), err
 }
@@ -175,11 +168,10 @@ func (c *FakeQueues) ApplyStatus(ctx context.Context, queue *schedulingv1beta1.Q
 	if name == nil {
 		return nil, fmt.Errorf("queue.Name must be provided to Apply")
 	}
-	emptyResult := &v1beta1.Queue{}
 	obj, err := c.Fake.
-		Invokes(testing.NewRootPatchSubresourceActionWithOptions(queuesResource, *name, types.ApplyPatchType, data, opts.ToPatchOptions(), "status"), emptyResult)
+		Invokes(testing.NewRootPatchSubresourceAction(queuesResource, *name, types.ApplyPatchType, data, "status"), &v1beta1.Queue{})
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1beta1.Queue), err
 }

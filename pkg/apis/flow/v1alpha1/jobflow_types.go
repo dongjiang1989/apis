@@ -33,20 +33,12 @@ type JobFlowSpec struct {
 	// Foo is an example field of JobFlow. Edit jobflow_types.go to remove/update
 	Flows           []Flow `json:"flows,omitempty"`
 	JobRetainPolicy string `json:"jobRetainPolicy,omitempty"`
-	// The global maximum number of retries per task.
-	// Defaults to 3.
-	//
-	// +kubebuilder:default:=3
-	// +optional
-	MaxRetry *int64 `json:"maxRetry,omitempty"`
 }
 
 // Flow defines the dependent of jobs
 type Flow struct {
 	Name      string     `json:"name"`
 	DependsOn *DependsOn `json:"dependsOn,omitempty"`
-	// +optional
-	Patch *v1alpha1.JobSpec `json:"patch,omitempty"`
 }
 
 type DependsOn struct {

@@ -43,24 +43,22 @@ var commandsKind = v1alpha1.SchemeGroupVersion.WithKind("Command")
 
 // Get takes name of the command, and returns the corresponding command object, and an error if there is any.
 func (c *FakeCommands) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.Command, err error) {
-	emptyResult := &v1alpha1.Command{}
 	obj, err := c.Fake.
-		Invokes(testing.NewGetActionWithOptions(commandsResource, c.ns, name, options), emptyResult)
+		Invokes(testing.NewGetAction(commandsResource, c.ns, name), &v1alpha1.Command{})
 
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1alpha1.Command), err
 }
 
 // List takes label and field selectors, and returns the list of Commands that match those selectors.
 func (c *FakeCommands) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CommandList, err error) {
-	emptyResult := &v1alpha1.CommandList{}
 	obj, err := c.Fake.
-		Invokes(testing.NewListActionWithOptions(commandsResource, commandsKind, c.ns, opts), emptyResult)
+		Invokes(testing.NewListAction(commandsResource, commandsKind, c.ns, opts), &v1alpha1.CommandList{})
 
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 
 	label, _, _ := testing.ExtractFromListOptions(opts)
@@ -79,30 +77,28 @@ func (c *FakeCommands) List(ctx context.Context, opts v1.ListOptions) (result *v
 // Watch returns a watch.Interface that watches the requested commands.
 func (c *FakeCommands) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
-		InvokesWatch(testing.NewWatchActionWithOptions(commandsResource, c.ns, opts))
+		InvokesWatch(testing.NewWatchAction(commandsResource, c.ns, opts))
 
 }
 
 // Create takes the representation of a command and creates it.  Returns the server's representation of the command, and an error, if there is any.
 func (c *FakeCommands) Create(ctx context.Context, command *v1alpha1.Command, opts v1.CreateOptions) (result *v1alpha1.Command, err error) {
-	emptyResult := &v1alpha1.Command{}
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateActionWithOptions(commandsResource, c.ns, command, opts), emptyResult)
+		Invokes(testing.NewCreateAction(commandsResource, c.ns, command), &v1alpha1.Command{})
 
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1alpha1.Command), err
 }
 
 // Update takes the representation of a command and updates it. Returns the server's representation of the command, and an error, if there is any.
 func (c *FakeCommands) Update(ctx context.Context, command *v1alpha1.Command, opts v1.UpdateOptions) (result *v1alpha1.Command, err error) {
-	emptyResult := &v1alpha1.Command{}
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateActionWithOptions(commandsResource, c.ns, command, opts), emptyResult)
+		Invokes(testing.NewUpdateAction(commandsResource, c.ns, command), &v1alpha1.Command{})
 
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1alpha1.Command), err
 }
@@ -117,7 +113,7 @@ func (c *FakeCommands) Delete(ctx context.Context, name string, opts v1.DeleteOp
 
 // DeleteCollection deletes a collection of objects.
 func (c *FakeCommands) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
-	action := testing.NewDeleteCollectionActionWithOptions(commandsResource, c.ns, opts, listOpts)
+	action := testing.NewDeleteCollectionAction(commandsResource, c.ns, listOpts)
 
 	_, err := c.Fake.Invokes(action, &v1alpha1.CommandList{})
 	return err
@@ -125,12 +121,11 @@ func (c *FakeCommands) DeleteCollection(ctx context.Context, opts v1.DeleteOptio
 
 // Patch applies the patch and returns the patched command.
 func (c *FakeCommands) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.Command, err error) {
-	emptyResult := &v1alpha1.Command{}
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceActionWithOptions(commandsResource, c.ns, name, pt, data, opts, subresources...), emptyResult)
+		Invokes(testing.NewPatchSubresourceAction(commandsResource, c.ns, name, pt, data, subresources...), &v1alpha1.Command{})
 
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1alpha1.Command), err
 }
@@ -148,12 +143,11 @@ func (c *FakeCommands) Apply(ctx context.Context, command *busv1alpha1.CommandAp
 	if name == nil {
 		return nil, fmt.Errorf("command.Name must be provided to Apply")
 	}
-	emptyResult := &v1alpha1.Command{}
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceActionWithOptions(commandsResource, c.ns, *name, types.ApplyPatchType, data, opts.ToPatchOptions()), emptyResult)
+		Invokes(testing.NewPatchSubresourceAction(commandsResource, c.ns, *name, types.ApplyPatchType, data), &v1alpha1.Command{})
 
 	if obj == nil {
-		return emptyResult, err
+		return nil, err
 	}
 	return obj.(*v1alpha1.Command), err
 }

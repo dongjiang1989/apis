@@ -17,19 +17,14 @@ limitations under the License.
 
 package v1alpha1
 
-import (
-	batchv1alpha1 "volcano.sh/apis/pkg/client/applyconfiguration/batch/v1alpha1"
-)
-
-// FlowApplyConfiguration represents a declarative configuration of the Flow type for use
+// FlowApplyConfiguration represents an declarative configuration of the Flow type for use
 // with apply.
 type FlowApplyConfiguration struct {
-	Name      *string                                  `json:"name,omitempty"`
-	DependsOn *DependsOnApplyConfiguration             `json:"dependsOn,omitempty"`
-	Patch     *batchv1alpha1.JobSpecApplyConfiguration `json:"patch,omitempty"`
+	Name      *string                      `json:"name,omitempty"`
+	DependsOn *DependsOnApplyConfiguration `json:"dependsOn,omitempty"`
 }
 
-// FlowApplyConfiguration constructs a declarative configuration of the Flow type for use with
+// FlowApplyConfiguration constructs an declarative configuration of the Flow type for use with
 // apply.
 func Flow() *FlowApplyConfiguration {
 	return &FlowApplyConfiguration{}
@@ -48,13 +43,5 @@ func (b *FlowApplyConfiguration) WithName(value string) *FlowApplyConfiguration 
 // If called multiple times, the DependsOn field is set to the value of the last call.
 func (b *FlowApplyConfiguration) WithDependsOn(value *DependsOnApplyConfiguration) *FlowApplyConfiguration {
 	b.DependsOn = value
-	return b
-}
-
-// WithPatch sets the Patch field in the declarative configuration to the given value
-// and returns the receiver, so that objects can be built by chaining "With" function invocations.
-// If called multiple times, the Patch field is set to the value of the last call.
-func (b *FlowApplyConfiguration) WithPatch(value *batchv1alpha1.JobSpecApplyConfiguration) *FlowApplyConfiguration {
-	b.Patch = value
 	return b
 }
