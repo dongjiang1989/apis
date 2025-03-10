@@ -43,7 +43,20 @@ type Flow struct {
 	// +required
 	Name string `json:"name"`
 	// +optional
+	Patch *Patch `json:"patch,omitempty"`
+	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty"`
+	// Defaults to 1.
+	//
+	// +kubebuilder:default:=1
+	// +kubebuilder:validation:Minimum=1
+	// +optional
+	MaxRetry *int64 `json:"maxRetry,omitempty"`
+}
+
+type Patch struct {
+	// +optional
+	Spec *v1alpha1.JobSpec `json:"spec,omitempty"`
 }
 
 type DependsOn struct {
