@@ -55,8 +55,8 @@ type Flow struct {
 }
 
 type Patch struct {
-	// +optional
-	Spec *v1alpha1.JobSpec `json:"spec,omitempty"`
+	// +required
+	Spec v1alpha1.JobSpec `json:"spec"`
 }
 
 type DependsOn struct {
